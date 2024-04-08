@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 import PIL
 
+
 def tensor_to_image(tensor):
     tensor = tensor * 255
     tensor = np.array(tensor, dtype=np.uint8)

@@ -1,8 +1,7 @@
 import tensorflow as tf
 import time
 from pdbvangogh.img import tensor_to_image, load_img, imshow
-
-
+from pdbvangogh import data_models
 
 def gram_matrix(input_tensor):
     result = tf.linalg.einsum("bijc,bijd->bcd", input_tensor, input_tensor)
@@ -12,7 +11,9 @@ def gram_matrix(input_tensor):
 
 
 def vgg_layers(layer_names):
-    """Creates a VGG model that returns a list of intermediate output values."""
+    """Creates a VGG model that returns a list of intermediate output values.
+    Acknowlegement: https://www.tensorflow.org/tutorials/generative/style_transfer
+    """
     # Load our model. Load pretrained VGG, trained on ImageNet data
     vgg = tf.keras.applications.VGG19(include_top=False, weights="imagenet")
     vgg.trainable = False
@@ -28,6 +29,11 @@ def clip_0_1(image):
 
 
 class StyleContentModel(tf.keras.models.Model):
+    """
+    Model for vgg19-based style transfer
+    Acknowledgement: https://www.tensorflow.org/tutorials/generative/style_transfer
+    """
+
     def __init__(self, style_layers, content_layers):
         super(StyleContentModel, self).__init__()
         self.vgg = vgg_layers(style_layers + content_layers)
@@ -67,9 +73,10 @@ def style_content_loss(outputs, style_targets, content_targets, num_content_laye
 def am_i_in_a_jupyter_notebook():
     try:
         from IPython import get_ipython
+
         # Check if the get_ipython function exists
         # If we're in Jupyter, get_ipython will not be None
-        if 'IPKernelApp' not in get_ipython().config:  # pragma: no cover
+        if "IPKernelApp" not in get_ipython().config:  # pragma: no cover
             return False
     except ImportError:
         # IPython is not installed, definitely not in a notebook
@@ -79,7 +86,8 @@ def am_i_in_a_jupyter_notebook():
         return False
     return True
 
-def style_transfer_vgg19(content_image, style_image, style_weight=1e-3, content_weight=1e4, epochs=10, steps_per_epoch = 100, total_variation_weight=0):
+
+def style_transfer_vgg19(content_image, style_image, hyperparameters=data_models.vgg19_transfer_parameters()):
     x = tf.keras.applications.vgg19.preprocess_input(content_image * 255)
     x = tf.image.resize(x, (224, 224))
     vgg = tf.keras.applications.VGG19(include_top=False, weights="imagenet")
@@ -100,9 +108,9 @@ def style_transfer_vgg19(content_image, style_image, style_weight=1e-3, content_
     def train_step(image, style_targets, content_targets):
         with tf.GradientTape() as tape:
             outputs = extractor(image)
-            loss = style_content_loss(outputs, style_targets, content_targets, num_content_layers, num_style_layers, style_weight, content_weight)
-            if total_variation_weight > 0:
-                loss += total_variation_weight * tf.image.total_variation(image)
+            loss = style_content_loss(outputs, style_targets, content_targets, num_content_layers, num_style_layers, hyperparameters.style_weight, hyperparameters.content_weight)
+            if hyperparameters.total_variation_weight > 0:
+                loss += hyperparameters.total_variation_weight * tf.image.total_variation(image)
 
         grad = tape.gradient(loss, image)
         opt.apply_gradients([(grad, image)])
