@@ -1,12 +1,19 @@
-from pdbvangogh.pdb import *
+from pdbvangogh import pdb
 from pdbvangogh.img import *
 from pdbvangogh.models import *
 from pdbvangogh.data_models import *
+import os
 
 def test_func():
     return True
 
-def pdbvangogh(background_image, content_image, style_image, save_prefix, background_style_weight=1e-2, content_style_weight=1e-4, content_size=50, background_size=100, epochs=10, steps_per_epoch=100, debug=False):
+def pdbvangogh(background_image,  style_image, save_prefix, out_dir = None, content_image = None, pdb_id = None, background_style_weight=1e-2, content_style_weight=1e-4, content_size=50, background_size=100, epochs=10, steps_per_epoch=100, debug=False):
+    assert(pdb_id is not None or content_image is not None)
+    if pdb_id is not None:
+        assert(out_dir is not None)
+        pdb.download_cif(pdb_id, out_dir)
+        content_image = os.path.join(out_dir, f'{pdb_id}.png')
+        pdb.visualize_cif_and_save_image(cif_file_path = os.path.join(out_dir, f'{pdb_id}.cif'), image_output_path = content_image)
     background_image = load_img(background_image)
     background_image_resized = tf.image.resize(background_image, [background_size, background_size], preserve_aspect_ratio=True, antialias=False, name=None)
     content_image = load_img(content_image)

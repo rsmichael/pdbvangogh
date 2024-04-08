@@ -17,7 +17,17 @@ def test_pdbvangogh():
     api.pdbvangogh(background_image = 'tests/in/pdx.png', 
                    content_image = 'tests/in/2l1v.png', 
                    style_image = 'tests/in/starry_night.png',
-                   save_prefix = 'tests/out/2l1v_pdx_starry_night_10_20',
+                   save_prefix = 'tests/out/2l1v_pdx_starry_night',
+                   content_size=100,
+                   background_size = 200,
+                   steps_per_epoch = 50,
+                   epochs = 1
+                   )
+    api.pdbvangogh(background_image = 'tests/in/pdx.png', 
+                   pdb_id = '2HYY',
+                   out_dir = 'tests/out/',
+                   style_image = 'tests/in/starry_night.png',
+                   save_prefix = 'tests/out/2HYY_pdx_starry_night',
                    content_size=100,
                    background_size = 200,
                    steps_per_epoch = 50,
