@@ -4,6 +4,7 @@ Sample output of pdbvangogh for a Pre-Q1 Riboswitch overlaid on an image of the 
 
 ![](https://github.com/rsmichael/pdbvangogh/blob/main/pdbvangogh_2l1v_pdx.png)
 
+The current version of this package uses the "classic" approach of [Gatys 2016](https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Gatys_Image_Style_Transfer_CVPR_2016_paper.pdf) with some tweaks to assure fidelity of the styled image to the molecular structure. Updates will add other style transfer methodologies.
 
 # Usage 
 
