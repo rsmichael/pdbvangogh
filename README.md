@@ -36,14 +36,14 @@ pdbvangogh has one main API function that takes in:
     - the path of a style image
     - the prefix for saved outputs
 
-From this directory, you can execute:
+From the main repo directory, you can execute:
 
 ```python
 from pdbvangogh.api import pdbvangogh
 
 pdbvangogh(background_image = 'src/tests/in/pdx.png', 
         pdb_id = '2l1v',
-        style_image = 'tests/in/starry_night.png',
+        style_image = 'src/tests/in/starry_night.png',
         save_prefix = 'pdbvangogh_test')
 ```
 

@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: pdbvangogh
+Version: 0.1
+Summary: pdbvangogh implements style transfer on PDB structures with artistic backgrounds
+Requires-Dist: pytest==8.1.1
+Requires-Dist: tensorflow==2.15.0
+Requires-Dist: tensorflow-hub==0.12.0

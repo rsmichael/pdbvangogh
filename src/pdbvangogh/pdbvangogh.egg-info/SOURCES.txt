@@ -1,0 +1,7 @@
+README.md
+setup.py
+src/pdbvangogh/pdbvangogh.egg-info/PKG-INFO
+src/pdbvangogh/pdbvangogh.egg-info/SOURCES.txt
+src/pdbvangogh/pdbvangogh.egg-info/dependency_links.txt
+src/pdbvangogh/pdbvangogh.egg-info/requires.txt
+src/pdbvangogh/pdbvangogh.egg-info/top_level.txt
