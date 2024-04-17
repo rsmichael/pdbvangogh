@@ -4,6 +4,11 @@ import PIL
 
 
 def tensor_to_image(tensor):
+    """
+    convert a tensorflow tensor representation of an image to a PIL.image object
+
+    This function is adapted from: https://www.tensorflow.org/tutorials/generative/style_transfer
+    """
     tensor = tensor * 255
     tensor = np.array(tensor, dtype=np.uint8)
     if np.ndim(tensor) > 3:
@@ -12,8 +17,12 @@ def tensor_to_image(tensor):
     return PIL.Image.fromarray(tensor)
 
 
-def load_img(path_to_img):
-    max_dim = 512
+def load_img(path_to_img, max_dim = 512):
+    """
+    load an image and cap its size at max_dim
+
+    This function is adapted from: https://www.tensorflow.org/tutorials/generative/style_transfer
+    """
     img = tf.io.read_file(path_to_img)
     img = tf.image.decode_image(img, channels=3)
     img = tf.image.convert_image_dtype(img, tf.float32)
@@ -30,6 +39,13 @@ def load_img(path_to_img):
 
 
 def imshow(image, title=None):
+    """
+    visualize a tensorflow or PIL.image object
+
+    If the tensorflow object has 4 dimensions, reduce it to 3
+
+    This function is adapted from: https://www.tensorflow.org/tutorials/generative/style_transfer
+    """
     if len(image.shape) > 3:
         image = tf.squeeze(image, axis=0)
 
@@ -39,6 +55,9 @@ def imshow(image, title=None):
 
 
 def resize_pil(image, new_width):
+    """
+    resize a PIL.image object by adjusting its width
+    """
     from PIL import Image
 
     original_width, original_height = image.size
@@ -80,8 +99,11 @@ def overlay_images(background_path, foreground_path, position=(0, 0), background
 
 
 def compute_sobel_mask(image):
-    # takes an image as input and computes a sobel mask
-    # note the input is an image and not a tensor
+    """
+    compute the Sobel mask of a PIL.image object
+
+    This function is adapted from: https://www.tensorflow.org/tutorials/generative/style_transfer
+    """
     sobel_x = tf.image.sobel_edges(image)[..., 0]
     sobel_y = tf.image.sobel_edges(image)[..., 1]
     sobel_edges = tf.sqrt(tf.square(sobel_x) + tf.square(sobel_y))
@@ -94,6 +116,11 @@ def compute_sobel_mask(image):
 
 
 def apply_mask(mask, image):
+    """
+    Apply a sobel mask to a PIL.image object
+
+    This function is adapted from: https://www.tensorflow.org/tutorials/generative/style_transfer
+    """
     selected_parts = image * tf.cast(mask, tf.float32)
     return selected_parts
 
@@ -132,6 +159,13 @@ def black_to_transparent(image_path, output_path, threshold=0):
 
 
 def sobel_mask(reference_image, query_image, final_size, save_path="intermediate_image.png"):
+    """
+    Apply the sobel mask of a reference image in PIL.image format to a query image
+
+    Resize the image to a designated final_size
+
+    Save the image at save_path
+    """
     # resize the reference image to match the size of the query image
     # query_image_size = (query_image.shape[1], query_image.shape[2])
     if type(query_image) == PIL.Image:
@@ -156,7 +190,7 @@ def sobel_mask(reference_image, query_image, final_size, save_path="intermediate
 
 def tf_image_to_pil_image(tf_image):
     """
-    Converts a TensorFlow image tensor to a PIL Image.
+    Convert a TensorFlow image tensor to a PIL Image.
 
     Parameters:
     - tf_image: A TensorFlow tensor representing an image, with pixel values in either the 0-1 or 0-255 range.
