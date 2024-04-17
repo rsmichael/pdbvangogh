@@ -18,8 +18,8 @@ def pdbvangogh(
     pdb_id=None,
     background_size = 500,
     content_size = 800, 
-    background_hyperparameters=vgg19_transfer_parameters(style_weight=1e-2, epochs=10, steps_per_epoch=100),
-    content_hyperparameters=vgg19_transfer_parameters(style_weight=1e-4, epochs=10, steps_per_epoch=100),
+    background_hyperparameters=gatys_transfer_parameters(style_weight=1e-2, epochs=10, steps_per_epoch=100),
+    content_hyperparameters=gatys_transfer_parameters(style_weight=1e-4, epochs=10, steps_per_epoch=100),
     debug=False,
 ):
     assert pdb_id is not None or content_image is not None
@@ -33,9 +33,9 @@ def pdbvangogh(
     content_image = load_img(content_image)
     content_image_resized = tf.image.resize(content_image, [content_size, content_size], preserve_aspect_ratio=True, antialias=False, name=None)
     style_image = load_img(style_image)
-    styled_content_image = style_transfer_vgg19(content_image=content_image_resized, style_image=style_image, hyperparameters=content_hyperparameters)
+    styled_content_image = style_transfer_gatys(content_image=content_image_resized, style_image=style_image, hyperparameters=content_hyperparameters)
     styled_content_image.save(f"{save_prefix}_unmasked_styled_content.png")
-    styled_background_image = style_transfer_vgg19(content_image=background_image_resized, style_image=style_image, hyperparameters=background_hyperparameters)
+    styled_background_image = style_transfer_gatys(content_image=background_image_resized, style_image=style_image, hyperparameters=background_hyperparameters)
     masked_styled_content = sobel_mask(reference_image=content_image, query_image=load_img(f"{save_prefix}_unmasked_styled_content.png"), final_size=content_size, save_path=f"{save_prefix}_masked_styled_content.png")
     styled_background_image.save(f"{save_prefix}_background_styled_content.png")
     if debug:

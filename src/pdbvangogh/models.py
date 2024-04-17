@@ -4,6 +4,10 @@ from pdbvangogh.img import tensor_to_image, load_img, imshow
 from pdbvangogh import data_models
 
 def gram_matrix(input_tensor):
+    """
+    Compute a gram matrix
+    This function is adapted from: https://www.tensorflow.org/tutorials/generative/style_transfer
+    """
     result = tf.linalg.einsum("bijc,bijd->bcd", input_tensor, input_tensor)
     input_shape = tf.shape(input_tensor)
     num_locations = tf.cast(input_shape[1] * input_shape[2], tf.float32)
@@ -12,7 +16,7 @@ def gram_matrix(input_tensor):
 
 def vgg_layers(layer_names):
     """Creates a VGG model that returns a list of intermediate output values.
-    Acknowlegement: https://www.tensorflow.org/tutorials/generative/style_transfer
+    This function is adapted from: https://www.tensorflow.org/tutorials/generative/style_transfer
     """
     # Load our model. Load pretrained VGG, trained on ImageNet data
     vgg = tf.keras.applications.VGG19(include_top=False, weights="imagenet")
@@ -25,13 +29,18 @@ def vgg_layers(layer_names):
 
 
 def clip_0_1(image):
+    """
+    clip tensor values at 0 and 1
+    This function is adapted from: https://www.tensorflow.org/tutorials/generative/style_transfer
+    """
     return tf.clip_by_value(image, clip_value_min=0.0, clip_value_max=1.0)
 
 
 class StyleContentModel(tf.keras.models.Model):
     """
-    Model for vgg19-based style transfer
-    Acknowledgement: https://www.tensorflow.org/tutorials/generative/style_transfer
+    Model for Gatys et al. 2016 style transfer
+
+    This object is adapted from: https://www.tensorflow.org/tutorials/generative/style_transfer
     """
 
     def __init__(self, style_layers, content_layers):
@@ -59,6 +68,11 @@ class StyleContentModel(tf.keras.models.Model):
 
 
 def style_content_loss(outputs, style_targets, content_targets, num_content_layers, num_style_layers, style_weight, content_weight):
+    """
+    Loss function for Gatys et al. 2016 style transfer
+
+    This function is adapted from: https://www.tensorflow.org/tutorials/generative/style_transfer
+    """
     style_outputs = outputs["style"]
     content_outputs = outputs["content"]
     style_loss = tf.add_n([tf.reduce_mean((style_outputs[name] - style_targets[name]) ** 2) for name in style_outputs.keys()])
@@ -71,6 +85,10 @@ def style_content_loss(outputs, style_targets, content_targets, num_content_laye
 
 
 def am_i_in_a_jupyter_notebook():
+    """
+    Quick check for whether code is being executed in a jupyter notebook
+    Returns boolean True/False
+    """
     try:
         from IPython import get_ipython
 
@@ -87,7 +105,14 @@ def am_i_in_a_jupyter_notebook():
     return True
 
 
-def style_transfer_vgg19(content_image, style_image, hyperparameters=data_models.vgg19_transfer_parameters()):
+def style_transfer_gatys(content_image, style_image, hyperparameters=data_models.gatys_transfer_parameters()):
+    """
+    Apply transfer of style from the style_image to the content_image using the method of Gatys et al. 2016
+
+    Additional 
+
+    This function is adapted from the implementation of the Gatys style transfer method in: https://www.tensorflow.org/tutorials/generative/style_transfer
+    """
     x = tf.keras.applications.vgg19.preprocess_input(content_image * 255)
     x = tf.image.resize(x, (224, 224))
     vgg = tf.keras.applications.VGG19(include_top=False, weights="imagenet")

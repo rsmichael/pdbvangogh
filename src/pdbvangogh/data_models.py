@@ -20,9 +20,9 @@ class style(BaseModel):
     image_path: str  # the path of the style image
 
 
-class vgg19_transfer_parameters(BaseModel):
+class gatys_transfer_parameters(BaseModel):
     """
-    hyperparameters for vgg19-based style transfer
+    hyperparameters for Gatys et al. 2016 style transfer method
     """
 
     style_weight: float = 10e-2  # weight for style
@@ -33,5 +33,5 @@ class vgg19_transfer_parameters(BaseModel):
 
 
 class style_transfer(BaseModel):
-    background_parameters: vgg19_transfer_parameters
-    content_parameters: vgg19_transfer_parameters
+    background_parameters: gatys_transfer_parameters
+    content_parameters: gatys_transfer_parameters

@@ -5,7 +5,7 @@ from pdbvangogh import api
 import tensorflow as tf
 import random
 import numpy as np
-from data_models import *
+from pdbvangogh.data_models import *
 
 np.random.seed(42)
 tf.random.set_seed(42)
@@ -21,8 +21,8 @@ def test_pdbvangogh():
                    save_prefix = 'tests/out/2l1v_pdx_starry_night',
                    content_size=100,
                    background_size = 200,
-                   background_hyperparameters=vgg19_transfer_parameters(style_weight=1e-2, epochs=1, steps_per_epoch=50),
-                   content_hyperparameters=vgg19_transfer_parameters(style_weight=1e-4, epochs=1, steps_per_epoch=50)
+                   background_hyperparameters=gatys_transfer_parameters(style_weight=1e-2, epochs=1, steps_per_epoch=50),
+                   content_hyperparameters=gatys_transfer_parameters(style_weight=1e-4, epochs=1, steps_per_epoch=50)
                    )
     api.pdbvangogh(background_image = 'tests/in/pdx.png', 
                    pdb_id = '2HYY',
@@ -31,7 +31,7 @@ def test_pdbvangogh():
                    save_prefix = 'tests/out/2HYY_pdx_starry_night',
                    content_size=100,
                    background_size = 200,
-                   background_hyperparameters=vgg19_transfer_parameters(style_weight=1e-2, epochs=1, steps_per_epoch=50),
-                   content_hyperparameters=vgg19_transfer_parameters(style_weight=1e-4, epochs=1, steps_per_epoch=50)
+                   background_hyperparameters=gatys_transfer_parameters(style_weight=1e-2, epochs=1, steps_per_epoch=50),
+                   content_hyperparameters=gatys_transfer_parameters(style_weight=1e-4, epochs=1, steps_per_epoch=50)
                    )
     assert(True)
