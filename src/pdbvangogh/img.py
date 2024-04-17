@@ -17,7 +17,7 @@ def tensor_to_image(tensor):
     return PIL.Image.fromarray(tensor)
 
 
-def load_img(path_to_img, max_dim = 512):
+def load_img(path_to_img, max_dim=512):
     """
     load an image and cap its size at max_dim
 

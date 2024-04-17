@@ -29,7 +29,7 @@ class gatys_transfer_parameters(BaseModel):
     content_weight: float = 1e4  # content weight
     epochs: int = 10  # number of "epochs" to train
     steps_per_epoch: int = 100  # number of steps per epoch
-    total_variation_weight : int = 0  # variation weight to penalize difference from original image
+    total_variation_weight: int = 0  # variation weight to penalize difference from original image
 
 
 class style_transfer(BaseModel):

@@ -3,6 +3,7 @@ import time
 from pdbvangogh.img import tensor_to_image, load_img, imshow
 from pdbvangogh import data_models
 
+
 def gram_matrix(input_tensor):
     """
     Compute a gram matrix
@@ -109,7 +110,7 @@ def style_transfer_gatys(content_image, style_image, hyperparameters=data_models
     """
     Apply transfer of style from the style_image to the content_image using the method of Gatys et al. 2016
 
-    Additional 
+    Additional
 
     This function is adapted from the implementation of the Gatys style transfer method in: https://www.tensorflow.org/tutorials/generative/style_transfer
     """
