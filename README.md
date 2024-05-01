@@ -40,15 +40,35 @@ pdbvangogh has one main API function that takes in:
 From the main repo directory, you can execute:
 
 ```python
+import os
 from pdbvangogh.api import pdbvangogh
 
 pdbvangogh(background_image = 'src/tests/in/pdx.png', 
         pdb_id = '2l1v',
         style_image = 'src/tests/in/starry_night.png',
-        save_prefix = 'pdbvangogh_test')
+        save_prefix = 'pdbvangogh_test',
+        out_dir = os.getcwd(),
+        background_size = 100,
+        content_size = 30)
 ```
 
-Documentation for other parameters for the pdbvangogh enabling more custom use cases is coming soon. This may take a long time to run if run on a CPU as opposed to a GPU.
+This test will make a low resolution image named pdbvangogh_test_overlayed_image.png. For a higher resolution image, change the background_size and content_size parameters, e.g. the following. As a note, runtimes will be very long on a CPU-only machine. 
+
+```python
+import os
+from pdbvangogh.api import pdbvangogh
+
+pdbvangogh(background_image = 'src/tests/in/pdx.png', 
+        pdb_id = '2l1v',
+        style_image = 'src/tests/in/starry_night.png',
+        save_prefix = 'pdbvangogh_test',
+        out_dir = os.getcwd(),
+        background_size = 800,
+        content_size = 500)
+```
+
+
+Documentation for other parameters for the pdbvangogh enabling more custom use cases is coming soon.
 
 
 
