@@ -1,0 +1,20 @@
+name: pdbvangogh_macos
+channels:
+  - conda-forge
+  - schrodinger
+dependencies:
+  - biopython=1.83
+  - black=24.3.0
+  - ipykernel=6.29.3
+  - nglview=3.1.2
+  - mamba
+  - pip=24.0
+  - pillow
+  - pydantic=2.6.4
+  - pymol-open-source=2.5.0 
+  - pytest=8.1.1
+  - python=3.10
+  - tensorflow-hub=0.12.0
+  - pip:
+    - tensorflow-metal
+    - tensorflow-macos
