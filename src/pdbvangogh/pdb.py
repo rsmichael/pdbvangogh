@@ -28,7 +28,7 @@ def visualize_cif_and_save_image(cif_file_path, image_output_path, width=800, he
     """
     # Initialize PyMOL
     pymol.finish_launching(["pymol", "-c"])  # '-c' for command-line only (no GUI)
-
+    assert(os.path.exists(cif_file_path))
     # Load the CIF file
     cmd.load(cif_file_path, "my_structure")
     # Customize the view, representation, etc.
@@ -43,4 +43,5 @@ def visualize_cif_and_save_image(cif_file_path, image_output_path, width=800, he
     cmd.png(image_output_path)
     # Quit PyMOL
     cmd.quit()
+    
     print(f"Image saved to {image_output_path}")
