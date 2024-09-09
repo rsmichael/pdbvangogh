@@ -4,6 +4,9 @@ import requests
 import os
 
 
+global pymol_initialized 
+pymol_initialized = False
+
 def download_cif(pdb_id, directory):
     url = f"https://files.rcsb.org/download/{pdb_id}.cif"
     response = requests.get(url)
@@ -18,6 +21,7 @@ def download_cif(pdb_id, directory):
 
 
 def visualize_cif_and_save_image(cif_file_path, image_output_path, width=800, height=600):
+    global pymol_initialized
     """
     Visualizes a CIF file using PyMOL and saves the visualization as an image.
     Parameters:
@@ -27,8 +31,10 @@ def visualize_cif_and_save_image(cif_file_path, image_output_path, width=800, he
     - height: int, height of the output image.
     """
     # Initialize PyMOL
-    pymol.finish_launching(["pymol", "-c"])  # '-c' for command-line only (no GUI)
-    assert(os.path.exists(cif_file_path))
+    if not pymol_initialized:
+        pymol.finish_launching(["pymol", "-c"])  # '-c' for command-line only (no GUI)
+        pymol_initialized = True    # reinitialize PyMOL
+    cmd.reinitialize()
     # Load the CIF file
     cmd.load(cif_file_path, "my_structure")
     # Customize the view, representation, etc.
@@ -42,6 +48,5 @@ def visualize_cif_and_save_image(cif_file_path, image_output_path, width=800, he
     # Save the visualization to an image file
     cmd.png(image_output_path)
     # Quit PyMOL
-    cmd.quit()
-    
+    cmd.reinitialize()
     print(f"Image saved to {image_output_path}")
