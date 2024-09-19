@@ -158,6 +158,12 @@ def black_to_transparent(image_path, output_path, threshold=0):
     img.save(output_path, "PNG")
 
 
+
+
+
+
+
+
 def sobel_mask(reference_image, query_image, final_size, save_path="intermediate_image.png"):
     """
     Apply the sobel mask of a reference image in PIL.image format to a query image
